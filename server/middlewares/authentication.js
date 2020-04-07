@@ -1,7 +1,7 @@
 const { User } = require('../models')
 const decode = require('../helpers/decode')
 
-module.exports = () => {
+module.exports = (req, res, next) => {
   let decoded = decode(req.headers.access_token)
   User.findOne({
     where: { email : decoded.email }
