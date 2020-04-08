@@ -5,4 +5,12 @@ const authorization = require('../middlewares/authorization')
 
 router.post('/register', Controller.register)
 router.post('/login', Controller.login)
+
+router.use(authentication)
+
+router.post('/tasks', Controller.addTask)
+router.get('/tasks', Controller.getTasks)
+router.put('/tasks/:id', authorization, Controller.editTask)
+router.delete('/tasks/:id', authorization, Controller.deleteTask)
+
 module.exports = router
