@@ -14,9 +14,6 @@ module.exports = {
       description: {
         type: Sequelize.STRING
       },
-      organization: {
-        type: Sequelize.STRING
-      },
       UserId: {
         type: Sequelize.INTEGER
       },
