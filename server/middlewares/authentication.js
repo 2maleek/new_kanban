@@ -1,8 +1,9 @@
 const { User } = require('../models')
-const decode = require('../helpers/decode')
+const jwt = require('jsonwebtoken')
 
 module.exports = (req, res, next) => {
-  let decoded = decode(req.headers.access_token)
+  const decoded = jwt.verify(req.headers.access_token, process.env.SECRET)
+  req.user = decoded
   User.findOne({
     where: { email : decoded.email }
   })
