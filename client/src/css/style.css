@@ -9,7 +9,7 @@ body {
 .ui {
   height: 100vh;
   display: grid;
-  grid-template-rows: 50px 1fr;
+  grid-template-rows: 1fr;
   background-color: #0079bf;
   color: #eee;
 }
@@ -18,13 +18,7 @@ body {
   padding-left: 20px;
   display: flex;
   align-items: center;
-}
-.navbar.app {
-  background-color: #8ba5dd;
   font-size: 1.5rem;
-}
-.navbar.board {
-  font-size: 1.1rem;
 }
 
 .board-container {
@@ -66,13 +60,13 @@ body {
   color: #888;
 }
 
-ul {
+ul.card {
   list-style: none;
   margin: 0;
   max-height: calc(100% - 46px - 39px);
   overflow-y: auto;
 }
-ul li {
+ul.card li {
   background-color: #fff;
   padding: 20px;
   margin-bottom: 20px;
