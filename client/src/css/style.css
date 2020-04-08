@@ -1,0 +1,83 @@
+/* Some Sass variables */
+body {
+  margin: 0;
+  font-family: "Roboto";
+  font-size: 14px;
+  line-height: 1.3em;
+}
+
+.ui {
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 50px 1fr;
+  background-color: #0079bf;
+  color: #eee;
+}
+
+.navbar {
+  padding-left: 20px;
+  display: flex;
+  align-items: center;
+}
+.navbar.app {
+  background-color: #8ba5dd;
+  font-size: 1.5rem;
+}
+.navbar.board {
+  font-size: 1.1rem;
+}
+
+.board-container {
+  margin-top: 25px;
+  display: flex;
+  overflow-x: auto;
+}
+.board-container > * {
+  flex: 0 0 auto;
+  margin-left: 20px;
+}
+.board-container::after {
+  content: "";
+  flex: 0 0 20px;
+}
+
+.board {
+  width: 310px;
+  height: calc(100% - 20px - 17px);
+}
+.board > * {
+  background-color: #e2e4e6;
+  color: #333;
+  padding: 0 20px;
+}
+
+.board-header {
+  line-height: 46px;
+  font-size: 20px;
+  font-weight: bold;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.board-footer {
+  line-height: 39px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  color: #888;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  max-height: calc(100% - 46px - 39px);
+  overflow-y: auto;
+}
+ul li {
+  background-color: #fff;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 3px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+/*# sourceMappingURL=style.css.map */
