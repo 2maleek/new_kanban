@@ -1,5 +1,20 @@
 <template lang="pug">
   <div>
+    <nav class="navbar app navbar-expand-lg navbar-dark bg-primary" v-if="page === 'home'">
+      <a class="navbar-brand" href="#">{{name}}</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <button class="btn btn-light my-2 my-sm-0 mr-3" type="button">+ Create Task</button>
+          </li>
+        </ul>
+        <button class="btn btn-danger my-2 my-sm-0" type="button" @click="logout">Logout</button>
+      </div>
+    </nav>
     <div id="loader" v-if="waiting"></div>
     <div id="errorMessage" class="alert alert-warning alert-dismissible fade show" role="alert" v-if="error">
       <h6><strong>{{ message }}</strong></h6>
@@ -54,49 +69,31 @@
 
     <div id="home" v-else-if="page === 'home'">
       <div class="ui">
-      <nav class="navbar app">Navbar</nav>
-
       <div class="board-container">
         <div class="board">
           <div class="board-header">Backlog</div>
-          <ul>
-            <li>List card</li>
-            <li>Li LAgi</li>
-            <li>List card</li>
-            <li>Li LAgi</li>
-            <li>List card</li>
-            <li>Li LAgi</li>
-            <li>List card</li>
-            <li>Li LAgi</li>
+          <ul class="card">
             <li>List card Lorem ipsum dolor sit amet consectetur, adipisicing elit. Labore, quia illum alias dolores, velit earum mollitia corporis obcaecati, voluptatibus a sunt expedita tempora vero saepe! Totam asperiores adipisci alias non.</li>
-            <li>Li LAgi</li>
-            <li>List card</li>
-            <li>Li LAgi</li>
-            <li>List card</li>
-            <li>Li LAgi</li>
           </ul>
           <div class="board-footer">Footer</div>
         </div>
         <div class="board">
           <div class="board-header">Todo</div>
-          <ul>
-            <li>List card</li>
+          <ul class="card">
             <li>Li LAgi</li>
           </ul>
           <div class="board-footer">Footer</div>
         </div>
         <div class="board">
           <div class="board-header">Done</div>
-          <ul>
-            <li>List card</li>
+          <ul class="card">
             <li>Li LAgi</li>
           </ul>
           <div class="board-footer">Footer</div>
         </div>
         <div class="board">
           <div class="board-header">Completed</div>
-          <ul>
-            <li>List card</li>
+          <ul class="card">
             <li>Li LAgi</li>
           </ul>
           <div class="board-footer">Footer</div>
@@ -129,6 +126,7 @@ export default Vue.extend({
       error: false,
       message: '',
       waiting: false,
+      name: 'NAMA_USERNYA',
       nameRegister: null,
       emailRegister: null,
       passwordRegister: null,
@@ -198,13 +196,26 @@ export default Vue.extend({
         this.page = 'home';
       })
       .catch((err) => {
-        if(err.response.status === 400) {
+        console.log(err.response)
+        if(err.response.data.length > 0) {
           this.showError(err.response.data[0].message)
         }else {
           this.showError(err.response.data.message)
         }
         this.waiting = false;
       })
+    },
+    logout() {
+      localStorage.removeItem('access_token');
+      this.page = 'login'
+      this.reset()
+    },
+    reset() {
+      this.nameRegister =  null;
+      this.emailRegister =  null;
+      this.passwordRegister =  null;
+      this.emailLogin =  null;
+      this.passwordLogin =  null;
     },
     getTask() {
       axios.defaults.baseURL = 'http://localhost:3000';
