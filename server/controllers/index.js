@@ -19,7 +19,7 @@ class Controller {
       throw { status: 409, message: 'Email already registered'}
     })
     .then(result => {
-      res.status(200).json(result)
+      res.status(201).json(result)
     })
     .catch(err => {
       next(err)
