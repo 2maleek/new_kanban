@@ -5,7 +5,7 @@ module.exports = {
   hash: (password) => {
     return bcrypt.hash(password, saltRounds)
   },
-  compare: (password, encrypted) => {
-    return bcrypt.compare(password, encrypted)
+  compare: (password, hashed) => {
+    return bcrypt.compare(password, hashed)
   }
 }
