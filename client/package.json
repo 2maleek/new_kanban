@@ -5,9 +5,21 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "scss": "sass --watch src/css/style.scss  src/css/style.css"
+    "scss": "sass --watch src/css/style.scss  src/css/style.css",
+    "serve": "parcel ./src/index.html",
+    "build": "parcel build ./src/index.html"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "vue": "^2.6.11",
+    "vue-hot-reload-api": "^2.3.4"
+  },
+  "devDependencies": {
+    "@vue/component-compiler-utils": "^3.1.2",
+    "pug": "^2.0.4",
+    "sass": "^1.26.3",
+    "vue-template-compiler": "^2.6.11"
+  }
 }
