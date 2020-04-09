@@ -7,7 +7,7 @@ body {
 }
 
 .ui {
-  height: 100vh;
+  height: 90vh;
   display: grid;
   grid-template-rows: 1fr;
   background-color: #0079bf;
@@ -42,7 +42,7 @@ body {
 .board > * {
   background-color: #e2e4e6;
   color: #333;
-  padding: 0 20px;
+  padding: 10px 20px 0px 20px;
 }
 
 .board-header {
