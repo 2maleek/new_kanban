@@ -61,11 +61,12 @@ class Controller {
 
   static addTask(req, res, next) {
     let { UserId } = req.user
-    let { title, description, } = req.body
+    let { title, description, category} = req.body
 
     Task.create({
       title,
       description,
+      category,
       UserId
     })
     .then(result => {
@@ -94,13 +95,26 @@ class Controller {
     })
   }
 
+  static getOneTask(req, res, next) {
+    let id = req.params.id
+
+    Task.findByPk(id)
+    .then(result => {
+      res.status(200).json(result)
+    })
+    .catch(err => {
+      next(err)
+    })
+  }
+
   static editTask(req, res, next) {
     let id = req.params.id
-    let { title, description } = req.body
+    let { title, description, category } = req.body
 
     Task.update({
       title,
-      description
+      description,
+      category
     },
     {
       where: { id }
