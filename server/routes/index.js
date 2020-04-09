@@ -10,6 +10,7 @@ router.use(authentication)
 
 router.post('/tasks', Controller.addTask)
 router.get('/tasks', Controller.getTasks)
+router.get('/tasks/:id', Controller.getOneTask)
 router.put('/tasks/:id', authorization, Controller.editTask)
 router.delete('/tasks/:id', authorization, Controller.deleteTask)
 
