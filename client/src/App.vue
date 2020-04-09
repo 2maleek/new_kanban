@@ -3,8 +3,9 @@
     <Navbar 
       :page="page"
       :name="name"
+      @showLoader="showLoader"
+      @createTask="createTask"
       @changePage="changePage"
-      @reset="reset"
     >
     </Navbar>
     <Authentication 
@@ -67,7 +68,10 @@ export default {
       message: '',
       waiting: false,
       name: 'NAMA_USERNYA',
-      
+      backlogTasks: [],
+      todoTasks: [],
+      doneTasks: [],
+      completedTasks: [],
     };
   },
   methods: {
@@ -86,14 +90,23 @@ export default {
       this.error = false;
       this.message = null;
     },
-    reset() {
-      this.nameRegister =  null;
-      this.emailRegister =  null;
-      this.passwordRegister =  null;
-      this.emailLogin =  null;
-      this.passwordLogin =  null;
+    createTask(data) {
+      axios({
+        method: 'POST',
+        url: '/tasks',
+        headers: {'access_token': localStorage.getItem('access_token')},
+        data: data,
+      })
+      .then(result => {
+        this.showLoader(false)
+        console.log(result);
+      })
+      .catch(err => {
+        this.showLoader(false)
+        console.log(err);
+      });
     },
-    getTask() {
+    getTasks() {
       axios.defaults.baseURL = 'http://localhost:3000';
       if(localStorage.getItem('access_token')){
         axios({
@@ -126,7 +139,7 @@ export default {
     },
   },
   created() {
-    this.getTask()
+    this.getTasks()
   },
   mounted() {
   },
