@@ -6,18 +6,9 @@
       @showLoader="showLoader"
       @createTask="createTask"
       @changePage="changePage"
+      @reset="reset"
     >
     </Navbar>
-    <Authentication 
-      :page="page"
-      :waiting="waiting"
-      @changePage="changePage"
-      @showError="showError"
-      @showLoader="showLoader"
-    >
-    </Authentication>
-    
-    <Home :page="page"></Home>
 
     <ErrorMessage
       :message="message"
@@ -25,6 +16,25 @@
       @closeError="closeError"
     >
     </ErrorMessage>
+    <Authentication 
+      :page="page"
+      :waiting="waiting"
+      @changePage="changePage"
+      @showError="showError"
+      @showLoader="showLoader"
+      @getTasks="getTasks"
+    >
+    </Authentication>
+    
+    <Home
+      :page="page"
+      :backlogTasks="backlogTasks"
+      :todoTasks="todoTasks"
+      :doneTasks="doneTasks"
+      :completedTaks="completedTasks"
+    >
+    </Home>
+
     <Loader 
       :waiting="waiting"
     >
@@ -63,11 +73,11 @@ export default {
   },
   data() {
     return {
+      name: localStorage.getItem('username'),
       page: 'login',
       error: false,
       message: '',
       waiting: false,
-      name: 'NAMA_USERNYA',
       backlogTasks: [],
       todoTasks: [],
       doneTasks: [],
@@ -75,6 +85,9 @@ export default {
     };
   },
   methods: {
+    getName() {
+      this.name = localStorage.getItem('username');
+    },
     changePage(nextPage) {
       this.page = nextPage;
       this.closeError()
@@ -99,7 +112,8 @@ export default {
       })
       .then(result => {
         this.showLoader(false)
-        console.log(result);
+        this.pushTask(result.data)
+        console.log('masuk ke push coyyy')
       })
       .catch(err => {
         this.showLoader(false)
@@ -107,6 +121,7 @@ export default {
       });
     },
     getTasks() {
+      this.getName()
       axios.defaults.baseURL = 'http://localhost:3000';
       if(localStorage.getItem('access_token')){
         axios({
@@ -118,11 +133,14 @@ export default {
           },
         })
         .then((result) => {
-          // Olah data ke home
-          console.log(result);
+          result.data.forEach(task => {
+            console.log(task)
+            this.pushTask(task)
+          })
           this.page = 'home';
         })
         .catch((err) => {
+          console.log(err)
           if(err.response.status === 401) {
             localStorage.removeItem('access_token');
             this.message = err.response.data.message;
@@ -137,6 +155,27 @@ export default {
         this.page = 'login';
       }
     },
+    pushTask(task) {
+      if(task.category === 'Backlog') {
+        this.backlogTasks.push(task)
+      }else if(task.category === 'Todo') {
+        this.todoTasks.push(task)
+      }else if(task.category === 'Done') {
+        this.doneTasks.push(task)
+      }else if(task.category === 'Completed') {
+        this.completedTasks.push(task)
+      }
+    },
+    updateTask(data) {
+
+    },
+    reset() {
+      this.name = null;
+      this.backlogTasks = [];
+      this.todoTasks = [];
+      this.doneTasks = [];
+      this.completedTasks = [];
+    },
   },
   created() {
     this.getTasks()
@@ -147,7 +186,6 @@ export default {
 
   },
   watch: {
-
   },
 };
 </script>
