@@ -5,13 +5,13 @@ $navbar-height: 50px;
 $list-width: 310px;
 $gap: 20px;
 $scrollbar-thickness: 17px;
-$list-header-height: 46px;
+$list-header-height: 36px;
 $list-footer-height: 39px;
 // Misc
 $list-border-radius: 5px;
 $card-border-radius: 3px;
 // Colors
-$board-bg-color: #0079bf;
+$board-bg-color: #696969;
 $appbar-bg-color: #8ba5dd;
 $list-bg-color: #e2e4e6;
 
@@ -64,7 +64,7 @@ body {
     background-color: $list-bg-color;
     color: #333;
 
-    padding: 10px $gap 0px $gap ;
+    padding: 1px $gap 0px $gap ;
   }  
 }
 
@@ -83,19 +83,19 @@ body {
   color: #888;
 }
 
-ul.card {
-  list-style: none;
+
+.cards-container {
   margin: 0;
   max-height: calc(100% - #{$list-header-height} - #{$list-footer-height});
   overflow-y: auto;
+}
 
-  li {
-    background-color: #fff;
-    padding: $gap;
-    margin-bottom: $gap;
-    border-radius: $card-border-radius;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-  }
+.card {
+  background-color: #fff;
+  padding: $gap;
+  margin-top: $gap;
+  border-radius: $card-border-radius;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 }
 
 #loader {
