@@ -31,7 +31,8 @@
       :backlogTasks="backlogTasks"
       :todoTasks="todoTasks"
       :doneTasks="doneTasks"
-      :completedTaks="completedTasks"
+      :completedTasks="completedTasks"
+      @deleteTask="deleteTask"
     >
     </Home>
 
@@ -168,6 +169,69 @@ export default {
     },
     updateTask(data) {
 
+    },
+    deleteTask(id, category) {
+      console.log(id)
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.value) {
+          axios({
+            method: 'delete',
+            url: `/tasks/${id}`,
+            headers: {'access_token': localStorage.getItem('access_token')},
+          })
+          .then(() => {
+            if(category === 'backlogTasks') {
+              let oldData = this.backlogTasks;
+              this.backlogTasks = []
+              oldData.forEach(task => {
+                if(task.id === id) {
+                  this.backlogTasks.push(task)
+                }
+              })
+            }else if(category === 'todoTasks') {
+              let oldData = this.todoTasks;
+              this.todoTasks = []
+              oldData.forEach(task => {
+                if(task.id === id) {
+                  this.todoTasks.push(task)
+                }
+              })
+            }else if(category === 'doneTasks') {
+              let oldData = this.doneTasks;
+              this.doneTasks = []
+              oldData.forEach(task => {
+                if(task.id === id) {
+                  this.doneTasks.push(task)
+                }
+              })
+            }else if(category === 'completedTasks') {
+              let oldData = this.completedTasks;
+              this.completedTasks = []
+              oldData.forEach(task => {
+                if(task.id !== id) {
+                  this.completedTasks.push(task)
+                }
+              })
+            }
+            Swal.fire(
+              'Deleted!',
+              'Your file has been deleted.',
+              'success'
+            )
+          })
+          .catch(err => {
+            console.log(err.response);
+          })
+        }
+      })
     },
     reset() {
       this.name = null;
