@@ -15,6 +15,7 @@
       @showLoader="showLoader"
       @changePage="changePage"
       @showError="showError"
+      @getTasks="getTasks"
     >
     </Login>
   </div>
@@ -44,6 +45,9 @@ export default {
     },
     showLoader(status) {
       this.$emit('showLoader', status);
+    },
+    getTasks() {
+      this.$emit('getTasks')
     }
   },
 };
