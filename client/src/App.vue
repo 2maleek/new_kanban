@@ -33,6 +33,7 @@
       :doneTasks="doneTasks"
       :completedTasks="completedTasks"
       @deleteTask="deleteTask"
+      @updateTask="updateTask"
     >
     </Home>
 
@@ -112,8 +113,16 @@ export default {
         data: data,
       })
       .then(result => {
+        console.log(result.data)
+        let data = {
+          id: result.data.id,
+          title: result.data.title,
+          description: result.data.description,
+          category: result.data.category,
+          Creator: localStorage.getItem('username')
+        }
         this.showLoader(false)
-        this.pushTask(result.data)
+        this.pushTask(data)
         console.log('masuk ke push coyyy')
       })
       .catch(err => {
@@ -167,11 +176,75 @@ export default {
         this.completedTasks.push(task)
       }
     },
-    updateTask(data) {
+    updateTask(id, data, category) {
+      axios({
+        method: 'put',
+        url: `/tasks/${id}`,
+        headers: {
+          'access_token':  localStorage.getItem('access_token'),
+        },
+        data: data,
+      })
+      .then(result => {
+          if(category === 'Backlog') {
+              let oldData = this.backlogTasks;
+              this.backlogTasks = []
+              oldData.forEach(task => {
+                if(task.id === id) {
+                  data.Creator = localStorage.getItem('username')
+                  
+                  this.backlogTasks.push(data)
+                }
+              })
+            }else if(category === 'Todo') {
+              let oldData = this.todoTasks;
+              this.todoTasks = []
+              oldData.forEach(task => {
+                if(task.id !== id) {
+                  data.Creator = localStorage.getItem('username')
 
+                  this.todoTasks.push(data)
+                }
+              })
+            }else if(category === 'Done') {
+              let oldData = this.doneTasks;
+              this.doneTasks = []
+              oldData.forEach(task => {
+                if(task.id !== id) {
+                  data.Creator = localStorage.getItem('username')
+                  this.doneTasks.push(data)
+                }
+              })
+            }else if(category === 'Completed') {
+              let oldData = this.completedTasks;
+              this.completedTasks = []
+              oldData.forEach(task => {
+                if(task.id !== id) {
+                  data.Creator = localStorage.getItem('username')
+                  this.completedTasks.push(data)
+                }
+              })
+            }
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+           title: 'Your work has been saved',
+           showConfirmButton: false,
+            timer: 1500
+          })
+      })
+      .catch(err => {
+        console.log(err.response)
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'failed Update data!',
+          footer: '<a href>Why do I have this issue?</a>'
+        })
+      })
     },
     deleteTask(id, category) {
-      console.log(id)
+      console.log(id, category)
       Swal.fire({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
@@ -188,31 +261,31 @@ export default {
             headers: {'access_token': localStorage.getItem('access_token')},
           })
           .then(() => {
-            if(category === 'backlogTasks') {
+            if(category == 'Backlog') {
               let oldData = this.backlogTasks;
               this.backlogTasks = []
               oldData.forEach(task => {
-                if(task.id === id) {
+                if(task.id !== id) {
                   this.backlogTasks.push(task)
                 }
               })
-            }else if(category === 'todoTasks') {
+            }else if(category === 'Todo') {
               let oldData = this.todoTasks;
               this.todoTasks = []
               oldData.forEach(task => {
-                if(task.id === id) {
+                if(task.id !== id) {
                   this.todoTasks.push(task)
                 }
               })
-            }else if(category === 'doneTasks') {
+            }else if(category === 'Done') {
               let oldData = this.doneTasks;
               this.doneTasks = []
               oldData.forEach(task => {
-                if(task.id === id) {
+                if(task.id !== id) {
                   this.doneTasks.push(task)
                 }
               })
-            }else if(category === 'completedTasks') {
+            }else if(category === 'Completed') {
               let oldData = this.completedTasks;
               this.completedTasks = []
               oldData.forEach(task => {
