@@ -92,6 +92,7 @@ class Controller {
       let data  = []
       result.forEach(element => {
         data.push({
+          id: element.id,
           title: element.title,
           description: element.description,
           category: element.category,
