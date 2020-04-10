@@ -27,7 +27,7 @@
                   <option>Backlog</option>
                   <option>Todo</option>
                   <option>Done</option>
-                  <option>Complete</option>
+                  <option>Completed</option>
                 </select>
               </div>
               <div class="form-group">
