@@ -2,46 +2,48 @@
   <div id="home" v-if="page === 'home'">
     <div class="ui">
     <div class="board-container">
-      <div class="board ">
-        <div class="board-header">Backlog</div>
-        <div class="cards-container bg-danger">
-          <Card v-for="task in backlogTasks" :title="task.title" :description="task.description" :Creator="task.Creator">
-          </Card>
-        </div>
-        <div class="board-footer bg-danger text-light">Footer</div>
-      </div>
-      <div class="board">
-        <div class="board-header">Todo</div>
-          <div class="card-container bg-warning">
-            <Card v-for="task in todoTasks" :title"task.title" :description="task.description" :Creator="task.Creator">
-            </Card>
-          </div>
-        <div class="board-footer bg-warning text-light">Footer</div>
-      </div>
-      <div class="board">
-        <div class="board-header">Done</div>
-        <div class="cards-container bg-info">
-            <Card v-for="task in doneTasks" :title"task.title" :description="task.description" :Creator="task.Creator">
-            </Card>
-        </div>
-        <div class="board-footer text-light bg-info">Footer</div>
-      </div>
-      <div class="board">
-        <div class="board-header">Completed</div>
-        <div class="cards-container bg-success">
-          <div class="card" v-for="task in completedTasks">
-            <Card v-for="task in completedTasks" :title"task.title" :description="task.description" :Creator="task.Creator">
-            </Card>
-          </div>
-        </div>
-        <div class="board-footer text-light bg-success">Footer</div>
-      </div>
+      <Board 
+        category="Backlog" 
+        boardFooter="Footer" 
+        classBody="cards-container bg-danger"
+        classFooter="board-footer bg-danger text-light"
+      >
+        <Card v-for="task in backlogTasks" :id="task.id" :title="task.title" :description="task.description" :Creator="task.Creator" category="Backlog" @deleteTask="deleteTask" @getData="getData">
+        </Card>
+      </Board>
+      <Board 
+        category="Todo" 
+        boardFooter="Footer" 
+        classBody="cards-container bg-warning"
+        classFooter="board-footer bg-warning text-dark"
+      >
+        <Card v-for="task in todoTasks" :id="task.id" :title="task.title" :description="task.description" :Creator="task.Creator" category="Todo" @deleteTask="deleteTask" @getData="getData">
+        </Card>
+      </Board>
+      <Board 
+        category="Done" 
+        boardFooter="Footer" 
+        classBody="cards-container bg-info"
+        classFooter="board-footer bg-info text-light"
+      >
+        <Card v-for="task in doneTasks" :id="task.id" :title="task.title" :description="task.description" :Creator="task.Creator" category="Done" @deleteTask="deleteTask" @getData="getData">
+        </Card>
+      </Board>
+      <Board 
+        category="Completed" 
+        boardFooter="Footer" 
+        classBody="cards-container bg-success"
+        classFooter="board-footer bg-success text-light"
+      >
+        <Card v-for="task in completedTasks" :id="task.id" :title="task.title" :description="task.description" :Creator="task.Creator" category="Completed" @deleteTask="deleteTask" @getData="getData">
+        </Card>
+      </Board>
     </div>
     <div class="modal fade" id="ModalEdit" tabindex="-1" role="dialog" aria-labelledby="ModalEditLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title text-dark" id="ModalEditLabel">Create Task</h5>
+            <h5 class="modal-title text-dark" id="ModalEditLabel">Update Task</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -58,7 +60,7 @@
                   <option>Backlog</option>
                   <option>Todo</option>
                   <option>Done</option>
-                  <option>Complete</option>
+                  <option>Completed</option>
                 </select>
               </div>
               <div class="form-group">
@@ -69,38 +71,55 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" data-dismiss="modal" @click="updateTask">Create</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" @click="updateTask">Update</button>
           </div>
         </div>
       </div>
     </div>
+
   </div>
 </template>
 
 <script>
 import Card from "../components/Card"
+import Board from "../components/Board"
+import Modal from "../components/Modal"
 
 export default {
   name: 'Home',
   components: {
     Card,
+    Board,
+    Modal,
   },
   props: [ 'page', 'backlogTasks', 'todoTasks', 'doneTasks', 'completedTasks' ],
   data() {
     return {
+      id: null,
       title: null,
       description: null,
       category: null,
     };
   },
   methods: {
-    getData(title, description, category) {
+    getData(id, title, description, category) {
+      console.log(id)
+      this.id = id
       this.title = title;
       this.description = description;
       this.category = category;
     },
     updateTask() {
-
+      let id = this.id
+      let category = this.category
+      let data = {
+        title: this.title,
+        description: this.description,
+        category:this.category,
+      }
+      console.log(id)
+      console.log(data)
+      this.$emit('updateTask', id, data, category)
     },
     deleteTask(id, category) {
       console.log(id)

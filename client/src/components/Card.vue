@@ -4,12 +4,12 @@
     <p>{{ description }}</p>
     <p><strong style="color: blue;">{{ Creator }}</strong></p>
 
-    <p class="btn btn-sm text-right" style="position:absolute; bottom:0; right: 20%;" data-toggle="modal" data-target="#ModalEdit" @click="getData(title, description, category)">
+    <p class="btn btn-sm text-right" style="position:absolute; bottom:0; right: 20%;" data-toggle="modal" data-target="#ModalEdit" @click="getData(id, title, description, category)">
       <a><img src="https://img.icons8.com/material-sharp/24/000000/edit.png">
       </a>
     </p>
 
-    <p class="btn btn-sm text-right" style="position:absolute; bottom:0; right: 5%;" @click="deleteTask(task.id, 'backlogTasks')">
+    <p class="btn btn-sm text-right" style="position:absolute; bottom:0; right: 5%;" @click="deleteTask(id, category)">
       <a>
         <img src="https://img.icons8.com/color/24/000000/delete-forever.png">
       </a>
@@ -21,15 +21,18 @@
 <script>
 export default {
 	name: 'Card',
-	props: [ 'title', 'description', 'Creator' ],
+	props: [ 'title', 'description', 'Creator', 'id',  'category'],
 	data() {
 		return {
 
 		};
 	},
 	methods: {
-		getData() {
-
+		getData(id, title, description, category) {
+			this.$emit('getData', id, title, description, category)
+		},
+		deleteTask(id, category) {
+			this.$emit('deleteTask', id, category)
 		},
 	},
 };
