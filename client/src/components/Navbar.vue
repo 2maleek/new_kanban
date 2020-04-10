@@ -1,12 +1,8 @@
 <template>
   <div>
-    <nav class="navbar app navbar-dark bg-primary" v-if="page === 'home'">
+    <nav class="navbar app navbar-dark bg-dark"  v-if="page === 'home'">
       <a class="navbar-brand" href="#">{{name}}</a>
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <button class="btn btn-light my-2 my-sm-0 mr-3" type="button" data-toggle="modal" data-target="#ModalCreate">+ Create Task</button>
-          </li>
-        </ul>
+        <button class="btn btn-light my-2 my-sm-0 mr-3" type="button" data-toggle="modal" data-target="#ModalCreate">+ Create Task</button>
         <button class="btn btn-danger my-2 my-sm-0" type="button" @click="logout">Logout</button>
     </nav>
 
@@ -42,7 +38,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" data-dismiss="modal" @click="createTask">Send message</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" @click="createTask">Create</button>
           </div>
         </div>
       </div>
@@ -65,7 +61,9 @@ export default {
   methods: {
     logout() {
       localStorage.removeItem('access_token');
+      localStorage.removeItem('username');
       this.$emit('changePage', 'login');
+      this.$emit('reset')
     },
     createTask() {
       this.$emit('showLoader', true);
