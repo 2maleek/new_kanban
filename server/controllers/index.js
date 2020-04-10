@@ -52,7 +52,7 @@ class Controller {
         email,
         organization,
       }, process.env.SECRET)
-      res.status(200).json({access_token})
+      res.status(200).json({access_token, username: name})
     })
     .catch(err => {
       next(err)
@@ -79,16 +79,28 @@ class Controller {
   }
 
   static getTasks(req, res, next) {
+    let { organization } = req.user
     Task.findAll({
       include: [
         { 
           model: User,
-          where: { organization: 'hacktiv8' }
+          where: { organization }
         }
       ]
     })
     .then(result => {
-      res.status(200).json(result)
+      let data  = []
+      result.forEach(element => {
+        data.push({
+          title: element.title,
+          description: element.description,
+          category: element.category,
+          UserId: element.UserId,
+          Creator: element.User.name
+        })
+      })
+      console.log(data[0])
+      res.status(200).json(data)
     })
     .catch(err => {
       next(err)
