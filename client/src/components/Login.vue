@@ -56,6 +56,8 @@ export default {
       })
       .then((result) => {
         localStorage.setItem('access_token', result.data.access_token);
+        localStorage.setItem('username', result.data.username);
+        this.$emit('getTasks')
         this.$emit('showLoader', false);
         ToastSuccess.fire({
           icon: 'success',
