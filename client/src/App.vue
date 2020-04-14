@@ -1,6 +1,6 @@
 <template>
-  <div>    
-    <Navbar 
+  <div>
+    <Navbar
       :page="page"
       :name="name"
       @showLoader="showLoader"
@@ -16,7 +16,7 @@
       @closeError="closeError"
     >
     </ErrorMessage>
-    <Authentication 
+    <Authentication
       :page="page"
       :waiting="waiting"
       @changePage="changePage"
@@ -25,7 +25,7 @@
       @getTasks="getTasks"
     >
     </Authentication>
-    
+
     <Home
       :page="page"
       :backlogTasks="backlogTasks"
@@ -37,7 +37,7 @@
     >
     </Home>
 
-    <Loader 
+    <Loader
       :waiting="waiting"
     >
     </Loader>
@@ -129,8 +129,8 @@ export default {
     },
     getTasks() {
       this.getName()
-      // axios.defaults.baseURL = 'https://glacial-ocean-84777.herokuapp.com';
-      axios.defaults.baseURL = 'http://localhost:3000';
+      axios.defaults.baseURL = 'https://glacial-ocean-84777.herokuapp.com';
+      // axios.defaults.baseURL = 'http://localhost:3000';
       if(localStorage.getItem('access_token')){
         axios({
           method: 'GET',
@@ -173,11 +173,6 @@ export default {
       }
     },
     updateTask(id, data, category) {
-      console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')           
-      console.log(id)
-      console.log(data)
-      console.log(category)
-      console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')           
       axios({
         method: 'put',
         url: `/tasks/${id}`,
@@ -187,31 +182,20 @@ export default {
         data: data,
       })
       .then(result => {
-        console.log(id)
         if(category === 'Backlog') {
-          console.log('masuk Backlog')
             let oldData = this.backlogTasks;
             this.backlogTasks = []
             oldData.forEach(task => {
-            console.log('<><><><><><>><<><><>')           
-              
-              console.log(task.id)               
-              if(task.id !== id) {   
+              if(task.id !== id) {
                 this.backlogTasks.push(task)
               }else{
                 this.pushTask(data)
               }
             })
           }else if(category === 'Todo') {
-          console.log('masuk Todo')
-
             let oldData = this.todoTasks;
             this.todoTasks = []
             oldData.forEach(task => {
-              console.log('<><><><><><>><<><><>')           
-              
-              console.log(task.id)
-
               if(task.id !== id) {
                 this.todoTasks.push(task)
               }else{
@@ -219,15 +203,9 @@ export default {
               }
             })
           }else if(category === 'Done') {
-          console.log('masuk Done')
-
             let oldData = this.doneTasks;
             this.doneTasks = []
             oldData.forEach(task => {
-              console.log('<><><><><><>><<><><>')           
-              
-              console.log(task.id)               
-              
               if(task.id !== id) {
                 this.doneTasks.push(task)
               }else{
@@ -235,15 +213,9 @@ export default {
               }
             })
           }else if(category === 'Completed') {
-          console.log('masuk Completed')
-
             let oldData = this.completedTasks;
             this.completedTasks = []
             oldData.forEach(task => {
-              console.log('<><><><><><>><<><><>')           
-              
-              console.log(task.id)               
-              
               if(task.id !== id) {
                 this.completedTasks.push(task)
               }else{
@@ -251,7 +223,7 @@ export default {
               }
             })
           }
-          data.Creator = localStorage.getItem('username')                    
+          data.Creator = localStorage.getItem('username')
         Swal.fire({
           position: 'top-end',
           icon: 'success',
