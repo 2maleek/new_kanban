@@ -48,7 +48,7 @@ export default {
     },
     getTasks() {
       this.$emit('getTasks')
-    }
+    },
   },
 };
 </script>

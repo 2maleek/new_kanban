@@ -99,6 +99,7 @@ export default {
       title: null,
       description: null,
       category: null,
+      oldCategory: null,
     };
   },
   methods: {
@@ -108,37 +109,27 @@ export default {
       this.title = title;
       this.description = description;
       this.category = category;
+      this.oldCategory = category;
     },
     updateTask() {
       let id = this.id
-      let category = this.category
+      let oldCategory = this.oldCategory
+      let category = this.category;
+
       let data = {
+        id,
         title: this.title,
         description: this.description,
-        category:this.category,
+        category,
       }
       console.log(id)
       console.log(data)
-      this.$emit('updateTask', id, data, category)
+      this.$emit('updateTask', id, data, oldCategory)
     },
     deleteTask(id, category) {
       console.log(id)
       this.$emit('deleteTask', id, category)
     }
   },
-  watch: {
-    backlogTasks() {
-      console.log('backlog nambah')
-    },
-    todoTasks() {
-      console.log('todo nambah')
-    },
-    doneTasks() {
-      console.log('done nambah')
-    },
-    completedTasks() {
-      console.log('completed nambah')
-    },
-  }
 }
 </script>

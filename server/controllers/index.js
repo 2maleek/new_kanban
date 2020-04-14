@@ -1,6 +1,8 @@
 const {User, Task} = require('../models')
 const { compare } = require('../helpers/bcrypt')
 const jwt = require('jsonwebtoken')
+const {OAuth2Client} = require('google-auth-library');
+const client = new OAuth2Client(process.env.CLIENT_ID);
 
 class Controller {
   static register(req, res, next) {
@@ -59,6 +61,53 @@ class Controller {
     })
   }
 
+  static googleSignIn(req, res, next) {
+    let token  = req.body.token
+    let email = null
+    let name = null
+
+    client.verifyIdToken({
+      idToken: token,
+      audience: process.env.CLIENT_ID
+    })
+    .then(ticket => {
+      return ticket.getPayload()
+    })
+    .then(payload => {
+      email = payload.email
+      name = payload.name
+      return User.findOne({
+        where: {
+          email: payload.email
+        }
+      })
+    })
+    .then(data => {
+      if(!data){
+        return User.create({
+          name: name,
+          email: email,
+          password: '123bbashkldsmbdasadasd54sdd45'
+        })
+      }
+      return data
+    })
+    .then(data => {
+      console.log(data)
+      let { id, name, email, organization } = data
+      let access_token = jwt.sign({
+        UserId: id,
+        name,
+        email,
+        organization,
+      }, process.env.SECRET)
+      res.status(200).json({access_token, username: name})
+    })
+    .catch(err => {
+      next(err)
+    })
+  }
+
   static addTask(req, res, next) {
     let { UserId } = req.user
     let { title, description, category} = req.body
@@ -100,7 +149,6 @@ class Controller {
           Creator: element.User.name
         })
       })
-      console.log(data[0])
       res.status(200).json(data)
     })
     .catch(err => {

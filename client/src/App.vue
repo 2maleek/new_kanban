@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div>    
     <Navbar 
       :page="page"
       :name="name"
@@ -66,7 +66,7 @@ const ToastSuccess = Swal.mixin({
 })
 
 export default {
-   components: {
+  components: {
     Authentication,
     Home,
     ErrorMessage,
@@ -113,7 +113,6 @@ export default {
         data: data,
       })
       .then(result => {
-        console.log(result.data)
         let data = {
           id: result.data.id,
           title: result.data.title,
@@ -123,15 +122,14 @@ export default {
         }
         this.showLoader(false)
         this.pushTask(data)
-        console.log('masuk ke push coyyy')
       })
       .catch(err => {
         this.showLoader(false)
-        console.log(err);
       });
     },
     getTasks() {
       this.getName()
+      // axios.defaults.baseURL = 'https://glacial-ocean-84777.herokuapp.com';
       axios.defaults.baseURL = 'http://localhost:3000';
       if(localStorage.getItem('access_token')){
         axios({
@@ -144,13 +142,11 @@ export default {
         })
         .then((result) => {
           result.data.forEach(task => {
-            console.log(task)
             this.pushTask(task)
           })
           this.page = 'home';
         })
         .catch((err) => {
-          console.log(err)
           if(err.response.status === 401) {
             localStorage.removeItem('access_token');
             this.message = err.response.data.message;
@@ -177,6 +173,11 @@ export default {
       }
     },
     updateTask(id, data, category) {
+      console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')           
+      console.log(id)
+      console.log(data)
+      console.log(category)
+      console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')           
       axios({
         method: 'put',
         url: `/tasks/${id}`,
@@ -186,65 +187,89 @@ export default {
         data: data,
       })
       .then(result => {
-          if(category === 'Backlog') {
-              let oldData = this.backlogTasks;
-              this.backlogTasks = []
-              oldData.forEach(task => {
-                if(task.id === id) {
-                  data.Creator = localStorage.getItem('username')
-                  
-                  this.backlogTasks.push(data)
-                }
-              })
-            }else if(category === 'Todo') {
-              let oldData = this.todoTasks;
-              this.todoTasks = []
-              oldData.forEach(task => {
-                if(task.id !== id) {
-                  data.Creator = localStorage.getItem('username')
+        console.log(id)
+        if(category === 'Backlog') {
+          console.log('masuk Backlog')
+            let oldData = this.backlogTasks;
+            this.backlogTasks = []
+            oldData.forEach(task => {
+            console.log('<><><><><><>><<><><>')           
+              
+              console.log(task.id)               
+              if(task.id !== id) {   
+                this.backlogTasks.push(task)
+              }else{
+                this.pushTask(data)
+              }
+            })
+          }else if(category === 'Todo') {
+          console.log('masuk Todo')
 
-                  this.todoTasks.push(data)
-                }
-              })
-            }else if(category === 'Done') {
-              let oldData = this.doneTasks;
-              this.doneTasks = []
-              oldData.forEach(task => {
-                if(task.id !== id) {
-                  data.Creator = localStorage.getItem('username')
-                  this.doneTasks.push(data)
-                }
-              })
-            }else if(category === 'Completed') {
-              let oldData = this.completedTasks;
-              this.completedTasks = []
-              oldData.forEach(task => {
-                if(task.id !== id) {
-                  data.Creator = localStorage.getItem('username')
-                  this.completedTasks.push(data)
-                }
-              })
-            }
-          Swal.fire({
-            position: 'top-end',
-            icon: 'success',
-           title: 'Your work has been saved',
-           showConfirmButton: false,
-            timer: 1500
-          })
+            let oldData = this.todoTasks;
+            this.todoTasks = []
+            oldData.forEach(task => {
+              console.log('<><><><><><>><<><><>')           
+              
+              console.log(task.id)
+
+              if(task.id !== id) {
+                this.todoTasks.push(task)
+              }else{
+                this.pushTask(data)
+              }
+            })
+          }else if(category === 'Done') {
+          console.log('masuk Done')
+
+            let oldData = this.doneTasks;
+            this.doneTasks = []
+            oldData.forEach(task => {
+              console.log('<><><><><><>><<><><>')           
+              
+              console.log(task.id)               
+              
+              if(task.id !== id) {
+                this.doneTasks.push(task)
+              }else{
+                this.pushTask(data)
+              }
+            })
+          }else if(category === 'Completed') {
+          console.log('masuk Completed')
+
+            let oldData = this.completedTasks;
+            this.completedTasks = []
+            oldData.forEach(task => {
+              console.log('<><><><><><>><<><><>')           
+              
+              console.log(task.id)               
+              
+              if(task.id !== id) {
+                this.completedTasks.push(task)
+              }else{
+                this.pushTask(data)
+              }
+            })
+          }
+          data.Creator = localStorage.getItem('username')                    
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+         title: 'Your work has been saved',
+         showConfirmButton: false,
+          timer: 1500
+        })
       })
       .catch(err => {
-        console.log(err.response)
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
           text: 'failed Update data!',
-          footer: '<a href>Why do I have this issue?</a>'
+          footer: '<a href>You don\'t have authorize for this task</a>'
         })
       })
     },
     deleteTask(id, category) {
-      console.log(id, category)
       Swal.fire({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
@@ -301,7 +326,12 @@ export default {
             )
           })
           .catch(err => {
-            console.log(err.response);
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'failed Update data!',
+              footer: '<a href>You don\'t have authorize for this task</a>'
+            })
           })
         }
       })

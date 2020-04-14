@@ -13,7 +13,8 @@
             <label for="">Password</label>
             <input type="password" class="form-control" v-model="passwordLogin">
           </div>
-          <button type="submit" class="btn btn-primary">Signin</button>
+          <button type="submit" class="btn btn-primary">Signin</button> OR Signin with
+          <button class="btn btn-light text-danger" @click="signInGoogle">Google</button>
         </form>
         <p>Don't have an account ?<a class="btn btn-outline-info" id="signupForm" v-on:click="changePage('register')">Signup here</a></p>
       </div>
@@ -77,6 +78,34 @@ export default {
     changePage(nextPage) {
       this.$emit('changePage', nextPage)
     },
+    signInGoogle() {
+      this.$gAuth.signIn()
+      .then(GoogleUser => {
+        var id_token = GoogleUser.getAuthResponse().id_token;
+        this.isSignIn = this.$gAuth.isAuthorized
+        return axios({
+          method: 'post',
+          url:'/googleSignIn',
+          data: { token: id_token },
+        })
+      })
+      .then((response) => {
+        localStorage.setItem('access_token', response.data.access_token);
+        localStorage.setItem('username', response.data.username);
+        this.$emit('getTasks')
+        this.$emit('showLoader', false);
+        ToastSuccess.fire({
+          icon: 'success',
+          title: 'Signed in successfully'
+        });
+        this.changePage('home')
+      })
+      .catch(error  => {
+        //on fail do something
+        console.log(error)
+      })
+
+    }
   }
 }
 </script>

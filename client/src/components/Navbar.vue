@@ -19,7 +19,7 @@
             <form>
               <div class="form-group">
                 <label class="col-form-label">Title</label>
-                <input type="text" class="form-control "v-model="title">
+                <input type="text" class="form-control" v-model="title">
               </div>
               <div class="form-group">
                 <label class="col-form-label">Category</label>
@@ -57,13 +57,21 @@ export default {
       category: null,
     };
   },
-  
+
   methods: {
     logout() {
-      localStorage.removeItem('access_token');
-      localStorage.removeItem('username');
+       this.$gAuth.signOut()
+      .then(() => {
+        console.log('user signout')
+      })
+      .catch(error  => {
+        console.log('google signout failed')
+      })
       this.$emit('changePage', 'login');
       this.$emit('reset')
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('username');
+
     },
     createTask() {
       this.$emit('showLoader', true);
