@@ -2,42 +2,52 @@
   <div id="home" v-if="page === 'home'">
     <div class="ui">
     <div class="board-container">
-      <Board 
-        category="Backlog" 
-        boardFooter="Footer" 
+      <Board v-for="board in boardCategory" :key="board.id"
+        :boardCategory="board.category"
+        :boardFooter="board.boardFooter"
+        :classBody="board.classBody"
+        :classFooter="board.classFooter"
+      >
+        <Card v-for="task in board.task" :key="task.id" :id="task.id" :title="task.title" :description="task.description" :Creator="task.Creator" :category="task.category" @deleteTask="deleteTask" @getData="getData">
+        </Card>
+      </Board>
+
+      <!-- <Board
+        category="Backlog"
+        boardFooter="Footer"
         classBody="cards-container bg-danger"
         classFooter="board-footer bg-danger text-light"
       >
-        <Card v-for="task in backlogTasks" :id="task.id" :title="task.title" :description="task.description" :Creator="task.Creator" category="Backlog" @deleteTask="deleteTask" @getData="getData">
+        <Card v-for="task in backlogTasks" :key="task.id" :id="task.id" :title="task.title" :description="task.description" :Creator="task.Creator" category="Backlog" @deleteTask="deleteTask" @getData="getData">
         </Card>
       </Board>
-      <Board 
-        category="Todo" 
-        boardFooter="Footer" 
+      <Board
+        category="Todo"
+        boardFooter="Footer"
         classBody="cards-container bg-warning"
         classFooter="board-footer bg-warning text-dark"
       >
-        <Card v-for="task in todoTasks" :id="task.id" :title="task.title" :description="task.description" :Creator="task.Creator" category="Todo" @deleteTask="deleteTask" @getData="getData">
+        <Card v-for="task in todoTasks" :key="task.id" :id="task.id" :title="task.title" :description="task.description" :Creator="task.Creator" category="Todo" @deleteTask="deleteTask" @getData="getData">
         </Card>
       </Board>
-      <Board 
-        category="Done" 
-        boardFooter="Footer" 
+      <Board
+        category="Done"
+        boardFooter="Footer"
         classBody="cards-container bg-info"
         classFooter="board-footer bg-info text-light"
       >
-        <Card v-for="task in doneTasks" :id="task.id" :title="task.title" :description="task.description" :Creator="task.Creator" category="Done" @deleteTask="deleteTask" @getData="getData">
+        <Card v-for="task in doneTasks" :key="task.id" :id="task.id" :title="task.title" :description="task.description" :Creator="task.Creator" category="Done" @deleteTask="deleteTask" @getData="getData">
         </Card>
       </Board>
-      <Board 
-        category="Completed" 
-        boardFooter="Footer" 
+      <Board
+        category="Completed"
+        boardFooter="Footer"
         classBody="cards-container bg-success"
         classFooter="board-footer bg-success text-light"
       >
-        <Card v-for="task in completedTasks" :id="task.id" :title="task.title" :description="task.description" :Creator="task.Creator" category="Completed" @deleteTask="deleteTask" @getData="getData">
+        <Card v-for="task in completedTasks" :key="task.id" :id="task.id" :title="task.title" :description="task.description" :Creator="task.Creator" category="Completed" @deleteTask="deleteTask" @getData="getData">
         </Card>
-      </Board>
+      </Board> -->
     </div>
     <div class="modal fade" id="ModalEdit" tabindex="-1" role="dialog" aria-labelledby="ModalEditLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -52,7 +62,7 @@
             <form>
               <div class="form-group">
                 <label class="col-form-label text-dark">Title</label>
-                <input type="text" class="form-control "v-model="title">
+                <input type="text" class="form-control " v-model="title">
               </div>
               <div class="form-group">
                 <label class="col-form-label text-dark">Category</label>
@@ -98,13 +108,19 @@ export default {
       id: null,
       title: null,
       description: null,
+      boardCategory: [
+        { category: "Backlog", boardFooter: "Footer", classBody: "cards-container bg-danger", classFooter: "board-footer bg-danger text-light", task: this.backlogTasks},
+        { category: "Todo", boardFooter: "Footer", classBody: "cards-container bg-warning", classFooter: "board-footer bg-warning text-dark", task: this.todoTasks},
+        { category: "Done", boardFooter: "Footer", classBody: "cards-container bg-info", classFooter: "board-footer bg-info text-light", task: this.doneTasks},
+        { category: "Completed", boardFooter: "Footer", classBody: "cards-container bg-success", classFooter: "board-footer bg-success text-light", task: this.completedTasks}
+      ],
       category: null,
       oldCategory: null,
     };
   },
   methods: {
     getData(id, title, description, category) {
-      console.log(id)
+      console.log(id, title, description, category)
       this.id = id
       this.title = title;
       this.description = description;
@@ -131,5 +147,19 @@ export default {
       this.$emit('deleteTask', id, category)
     }
   },
-}
+  watch: {
+    backlogTasks() {
+      this.boardCategory[0].task = this.backlogTasks
+    },
+    todoTasks() {
+      this.boardCategory[1].task = this.todoTasks
+    },
+    doneTasks() {
+      this.boardCategory[2].task = this.doneTasks
+    },
+    completedTasks() {
+      this.boardCategory[3].task = this.completedTasks
+    },
+  },
+};
 </script>

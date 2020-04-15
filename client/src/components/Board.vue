@@ -1,6 +1,6 @@
 <template>
   <div class="board ">
-    <div class="board-header">{{ category }}</div>
+    <div class="board-header">{{ boardCategory }}</div>
     <div :class="classBody">
       <slot></slot>
     </div>
@@ -11,6 +11,6 @@
 <script>
 export default {
   name: 'Board',
-  props: [ 'category', 'boardFooter', 'classBody', 'classFooter' ]
+  props: [ 'boardCategory', 'boardFooter', 'classBody', 'classFooter' ]
 };
 </script>
