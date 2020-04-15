@@ -14,7 +14,7 @@
             <input type="password" class="form-control" v-model="passwordLogin">
           </div>
           <button type="submit" class="btn btn-primary">Signin</button> OR Signin with
-          <button class="btn btn-light text-danger" @click="signInGoogle">Google</button>
+          <button type="button" class="btn btn-light text-danger" @click="signInGoogle">Google</button>
         </form>
         <p>Don't have an account ?<a class="btn btn-outline-info" id="signupForm" v-on:click="changePage('register')">Signup here</a></p>
       </div>
