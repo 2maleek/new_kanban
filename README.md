@@ -1,6 +1,10 @@
+#### API Demo : https://glacial-ocean-84777.herokuapp.com/
+#### App Demo : https://bukanban2.web.app/
+
 # Kanban Server
-Kanban is an application to manage your team's activity. This app has : 
+Kanban is an application to manage organization's tasks. This app has : 
 * RESTful endpoint for task's CRUD operation
+* authorization
 * JSON formatted response
 
 &nbsp;
@@ -18,9 +22,9 @@ not needed
 _Request Body_
 ```
 {
-  "name": "<your name>",
-  "email": "<your email>",
-  "password": "<your password>"
+  "name": <your name>,
+  "email": <your email>,
+  "password": <your password>
 }
 ```
 
@@ -28,12 +32,12 @@ _Request Body_
 _Response (201 - Created)_
 ```
 {
-  "id": 6,
-  "name": "<your name>",
-  "email": "<your email >",
-  "password": "<your encrypted password>",
-  "updatedAt": "2020-04-06T15:41:15.278Z",
-  "createdAt": "2020-04-06T15:41:15.278Z"
+  "id": <id>,
+  "name": <your name>,
+  "email": <your email>,
+  "password": <your encrypted password>,
+  "updatedAt": <date>,
+  "createdAt": <date>
 }
 ```
 
@@ -71,8 +75,8 @@ not needed
 _Request Body_
 ```
 {
-  "email": "<your email>",
-  "password": "<your password>"
+  "email": <your email>,
+  "password": <your password>
 }
 ```
 
@@ -80,7 +84,7 @@ _Request Body_
 _Response (200 - Ok)_
 ```
 {
-  "access_token": "<your access token>"
+  "access_token": <your access token>
 }
 ```
 
@@ -89,7 +93,7 @@ _Response (200 - Ok)_
 _Response (400 - Bad Request)_
 ```
 [
-  "message": "<detail message>"
+  "message": <detail message>
 ]
 ```
 
@@ -114,16 +118,16 @@ _Response (500 - Internal Server Error)_
 _Request Header_
 ```
 {
-  "access_token": "<your access token>"
+  "access_token": <your access token>
 }
 ```
 
 _Request Body_
 ```
 {
-	"title": "Titlenya"
-	"category": "Backlog"
-	"description": "description nya" 
+	"title": <title>
+	"category": <category>
+	"description": <description> 
 }
 ```
 
@@ -131,13 +135,13 @@ _Request Body_
 _Response (201 - Created)_
 ```
 {
-  "id": 36,
-  "title": "Titlenya",
-  "description": "description nya ",
-  "category": "Backlog",
-  "UserId": 4,
-  "updatedAt": "2020-04-10T17:25:57.336Z",
-  "createdAt": "2020-04-10T17:25:57.336Z"
+  "id": <id>,
+  "title": <title>,
+  "description": <description> ",
+  "category": <category>,
+  "UserId": <UserId>,
+  "updatedAt": <date>,
+  "createdAt": <date>
 }
 ```
 
@@ -169,7 +173,7 @@ _Response (500 - Internal Server Error)_
 _Request Header_
 ```
 {
-  "access_token": "<your access token>"
+  "access_token": <your access token>
 }
 ```
 
@@ -183,20 +187,20 @@ _Response (200 - Ok)_
 ```
 [
 	{
-    "id": 6,
-    "title": "Punya task pertama",
-    "description": "akhirnya punya task pertama dan tampl",
-    "category": "Backlog",
-    "UserId": 4,
-    "Creator": "<your name>"
+    "id": <id>,
+    "title": <title>,
+    "description": <description>,
+    "category": <category>,
+    "UserId": <UserId>,
+    "Creator": <your name>
 	},
 	{
-    "id": 7,
-    "title": "TEst task lagi",
-    "description": "kasar",
-    "category": "Backlog",
-    "UserId": 4,
-    "Creator": "<your name>"
+    "id": <id>,
+    "title": <title>,
+    "description": <description>,
+    "category": <category>,
+    "UserId": <UserId>,
+    "Creator": <your name>
 	},
 ]
 ```
@@ -223,7 +227,7 @@ _Response (500 - Internal Server Error)_
 _Request Header_
 ```
 {
-  "access_token": "<your access token>"
+  "access_token": <your access token>
 }
 ```
 
@@ -236,12 +240,12 @@ not needed
 _Response (200 - Ok)_
 ```
 {
-  "id": 6,
-  "title": "Punya task pertama",
-  "description": "akhirnya punya task pertama dan tampl",
-  "category": "Backlog",
-  "UserId": 4,
-  "Creator": "<your name>"
+  "id": <id>,
+  "title": <title>,
+  "description": <description>,
+  "category": <category>,
+  "UserId": <UserId>,
+  "Creator": <your name>
 },
 ```
 
@@ -280,16 +284,16 @@ _Response (500 - Internal Server Error)_
 _Request Header_
 ```
 {
-  "access_token": "<your access token>"
+  "access_token": <your access token>
 }
 ```
 
 _Request Body_
 ```
 {
-	"title": "Titlenya ke ubah"
-	"category": "Backlog"
-	"description": "description nya juga keubah"
+	"title": <title> "
+	"category": <category>
+	"description": <description>"
 }
 ```
 
@@ -336,7 +340,7 @@ _Response (500 - Internal Server Error)_
 _Request Header_
 ```
 {
-  "access_token": "<your access token>"
+  "access_token": <your access token>
 }
 ```
 
