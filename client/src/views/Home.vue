@@ -11,43 +11,7 @@
         <Card v-for="task in board.task" :key="task.id" :id="task.id" :title="task.title" :description="task.description" :Creator="task.Creator" :category="task.category" @deleteTask="deleteTask" @getData="getData">
         </Card>
       </Board>
-
-      <!-- <Board
-        category="Backlog"
-        boardFooter="Footer"
-        classBody="cards-container bg-danger"
-        classFooter="board-footer bg-danger text-light"
-      >
-        <Card v-for="task in backlogTasks" :key="task.id" :id="task.id" :title="task.title" :description="task.description" :Creator="task.Creator" category="Backlog" @deleteTask="deleteTask" @getData="getData">
-        </Card>
-      </Board>
-      <Board
-        category="Todo"
-        boardFooter="Footer"
-        classBody="cards-container bg-warning"
-        classFooter="board-footer bg-warning text-dark"
-      >
-        <Card v-for="task in todoTasks" :key="task.id" :id="task.id" :title="task.title" :description="task.description" :Creator="task.Creator" category="Todo" @deleteTask="deleteTask" @getData="getData">
-        </Card>
-      </Board>
-      <Board
-        category="Done"
-        boardFooter="Footer"
-        classBody="cards-container bg-info"
-        classFooter="board-footer bg-info text-light"
-      >
-        <Card v-for="task in doneTasks" :key="task.id" :id="task.id" :title="task.title" :description="task.description" :Creator="task.Creator" category="Done" @deleteTask="deleteTask" @getData="getData">
-        </Card>
-      </Board>
-      <Board
-        category="Completed"
-        boardFooter="Footer"
-        classBody="cards-container bg-success"
-        classFooter="board-footer bg-success text-light"
-      >
-        <Card v-for="task in completedTasks" :key="task.id" :id="task.id" :title="task.title" :description="task.description" :Creator="task.Creator" category="Completed" @deleteTask="deleteTask" @getData="getData">
-        </Card>
-      </Board> -->
+      
     </div>
     <div class="modal fade" id="ModalEdit" tabindex="-1" role="dialog" aria-labelledby="ModalEditLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
